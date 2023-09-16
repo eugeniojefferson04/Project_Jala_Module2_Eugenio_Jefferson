@@ -3,6 +3,9 @@ from dino_runner.components.powerups.power_up import PowerUp
 
 
 class Shield(PowerUp):
+    """
+    Cria o escudo.
+    """
     def __init__(self):
         self.image = SHIELD
         self.type = SHIELD_TYPE

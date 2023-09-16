@@ -2,7 +2,7 @@ import pygame, random
 from dino_runner.components.obstacles.cactus import Cactus
 from dino_runner.components.obstacles.bird import Bird
 
-class ObstacleManager:
+class Obstacle_Manager: # Alterei o nome da classe de 'ObstacleManager' para 'Obstacle_Manager', que é como está sendo chamada nos outros modulos
     def __init__(self):
         self.obstacles = []
         
