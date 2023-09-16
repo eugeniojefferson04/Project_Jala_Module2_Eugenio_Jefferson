@@ -1,5 +1,5 @@
 import pygame
-from pygame.sprite import Sprite
+from pygame.sprite import _Group, Sprite
 from dino_runner.utils.constants import RUNNING, JUMPING, DUCKING, DEFAULT_TYPE, SHIELD_TYPE, DUCKING_SHIELD, JUMPING_SHIELD, RUNNING_SHIELD
 
 DUCK_IMG = {

@@ -1,5 +1,4 @@
 import random
-from typing import Any
 from pygame.sprite import Sprite
 from dino_runner.utils.constants import SCREEN_WIDTH
 
@@ -11,13 +10,13 @@ class PowerUp(Sprite):
         self.rect.x = SCREEN_WIDTH + random.randint(800, 1000)
         self.rect.y = random.randint(125, 175)
         self.start_time = 0
-        self.duraction = random.randint(5, 10)
+        self.duration = random.randint(5, 10)
 
 
     def update(self, game_speed, power_ups):
         self.rect.x -= game_speed
         
-        if self.rect.x < - self.rect.width:
+        if self.rect.x < -self.rect.width:
             power_ups.pop()
 
 

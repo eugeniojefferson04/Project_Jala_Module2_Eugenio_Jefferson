@@ -9,7 +9,7 @@ class PowerUpManager:
 
     def generate_power_up(self, score):
         if len(self.power_ups) == 0 and self.when_appares == score:
-            self.when_appares += random.randint(200, 300)
+            self.when_appars += random.randint(200, 300)
             self.power_ups.append(Shield())
 
 
@@ -24,7 +24,7 @@ class PowerUpManager:
                 player.shield = True
                 player.has_power_up = True
                 player.type = power_up.type
-                player.power_up_time = power_up.start_time + (power_up.duration * 1000)
+                player.power_up_timing = power_up.start_time + (power_up.duration * 1000)
                 self.power_ups.remove(power_up)
 
 
@@ -34,6 +34,6 @@ class PowerUpManager:
 
 
     def reset_power_ups(self):
-        self.power_ups = {}
-        self.when_appares = random.randint(200, 300)
+        self.power_ups = []
+        self.when_appars = random.randint(200, 300)
         
