@@ -5,6 +5,9 @@ from dino_runner.components.obstacles.obstacle import Obstacle
 
 
 class Cactus(Obstacle):
+    """
+    Cria o objeto do cacto.
+    """
 
     CACTUS = [
         (LARGE_CACTUS, 300),

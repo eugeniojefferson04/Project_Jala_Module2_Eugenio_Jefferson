@@ -3,11 +3,17 @@ from dino_runner.components.obstacles.cactus import Cactus
 from dino_runner.components.obstacles.bird import Bird
 
 class Obstacle_Manager: # Alterei o nome da classe de 'ObstacleManager' para 'Obstacle_Manager', que é como está sendo chamada nos outros modulos
+    """
+    Gerencia os obstaculos.
+    """
     def __init__(self):
         self.obstacles = []
         
 
     def update(self, game):
+        """
+        Adiciona o obstáculo no jogo e verifica se o Dino bateu nele.
+        """
         obstacle_type = [
             Cactus(),
             Bird()

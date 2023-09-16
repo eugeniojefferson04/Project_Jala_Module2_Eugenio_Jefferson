@@ -3,6 +3,9 @@ from dino_runner.components.obstacles.obstacle import Obstacle
 
 
 class Bird(Obstacle):
+    """
+    Cria o objeto do pássaro.
+    """
     def __init__(self):
         super().__init__(BIRD, 0)
         self.rect.y = 250

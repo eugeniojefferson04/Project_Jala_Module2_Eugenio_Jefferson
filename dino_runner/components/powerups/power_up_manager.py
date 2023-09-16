@@ -2,12 +2,18 @@ import random, pygame
 from dino_runner.components.powerups.shield import Shield
 
 class PowerUpManager:
+    """
+    Gerencia os itens.
+    """
     def __init__(self):
         self.power_ups = []
-        self.when_appares = 0
+        self.when_appars = 0
 
 
     def generate_power_up(self, score):
+        """
+        Faz o item aparecer no jogo.
+        """
         if len(self.power_ups) == 0 and self.when_appars == score:
             self.when_appars += random.randint(200, 300)
             self.power_ups.append(Shield())
@@ -35,6 +41,9 @@ class PowerUpManager:
 
 
     def reset_power_ups(self):
+        """
+        Exclui o item.
+        """
         self.power_ups = []
         self.when_appars = random.randint(200, 300)
         

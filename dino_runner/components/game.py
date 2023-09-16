@@ -16,7 +16,7 @@ class Game:
         pygame.display.set_caption(TITLE)
         pygame.display.set_icon(ICON)
 
-        self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT)) # Alterei a ordem do tamanho, de '(SCREEN_HEIGHT, SCREEN_WIDTH)' para '(SCREEN_WIDTH, SCREEN_HEIGHT)', pois o tamanho da largura e altura estavam trocados
+        self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT)) 
         self.clock = pygame.time.Clock()
         self.playing = False
         self.running = False

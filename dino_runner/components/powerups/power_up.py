@@ -13,10 +13,13 @@ class PowerUp(Sprite):
         self.rect.x = SCREEN_WIDTH + random.randint(800, 1000)
         self.rect.y = random.randint(125, 175)
         self.start_time = 0
-        self.duration = random.randint(5, 10)
+        self.duration = random.randint(3, 8) # Alterei o tempo de duração do item, o padrão é (5, 10)
 
 
     def update(self, game_speed, power_ups):
+        """
+        Atualiza o item, realizando a sua movimentação ou excluindo quando ele sai da tela.
+        """
         self.rect.x -= game_speed
         
         if self.rect.x < -self.rect.width:
