@@ -6,8 +6,13 @@ class Bird(Obstacle):
     """
     Cria o objeto do pássaro.
     """
-    def __init__(self):
-        super().__init__(BIRD, 0)
+    def __init__(self, theme:str):
+        """
+        Constrói o pássaro. Modified by Eugênio Jefferson.
+        :theme - Recebe o tema atual, para definir a cor do pássaro.
+        """
+        bird_image = BIRD[2:] if theme == 'light' else BIRD[:2]
+        super().__init__(bird_image, 0) # Alterei para mudar a cor de acordo com o tema;
         self.rect.y = 250
         self.step_index = 0
 

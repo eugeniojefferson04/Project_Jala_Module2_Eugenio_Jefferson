@@ -14,7 +14,14 @@ class Cactus(Obstacle):
         (SMALL_CACTUS, 325),
     ]
 
-    def __init__(self):
+    def __init__(self, theme:str):
+        """
+        Constrói um cacto. Modified by Eugênio Jefferson.
+        :theme - Recebe o tema atual, para definir a cor do cacto.
+        """
+        self.CACTUS[0] = (LARGE_CACTUS[3:] if theme == 'light' else LARGE_CACTUS[:3], 300)
+        self.CACTUS[1] = (SMALL_CACTUS[3:] if theme == 'light' else SMALL_CACTUS[:3], 325)
+
         image, cactus_pos = self.CACTUS[random.randint(0, 1)]
         self.type = random.randint(0, 2)
         super().__init__(image, self.type)

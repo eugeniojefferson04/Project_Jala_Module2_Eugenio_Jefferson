@@ -51,18 +51,19 @@ class Dinosaur(Sprite):
         self.shield_time_up = 0 
         
 
-    def update(self, user_input):
+    def update(self, user_input, theme:str):
         """
-        Realiza a movimentação do Dino de acordo com os eventos assionados.
+        Realiza a movimentação do Dino de acordo com os eventos assionados. Modified by Eugênio Jefferson.
+        :theme - Recebe o tema atual para gerenciar as cores;
         """
         if self.dino_run:
-            self.run()
+            self.run(theme) # Alterei por causa do tema;
 
         elif self.dino_jump:
-            self.jump()
+            self.jump(theme) # Alterei por causa do tema;
 
         elif self.dino_duck:
-            self.duck()
+            self.duck(theme) # Alterei por causa do tema;
             
         if user_input[pygame.K_UP] and not self.dino_jump:
             self.dino_run = False
@@ -83,10 +84,14 @@ class Dinosaur(Sprite):
             self.step_index = 0
 
 
-    def run(self):
+    def run(self, theme:str):
         """
-        Faz a animação da corrida do Dino.
+        Faz a animação da corrida do Dino. Modified by Eugênio Jefferson.
+        :theme - Recebe o tema atual, para definir a cor do Dino.
         """
+        RUN_IMG[DEFAULT_TYPE] = RUNNING[2:] if theme == 'light' else RUNNING[:2] # Alterei para mudar a cor de acordo com o tema;
+        RUN_IMG[SHIELD_TYPE] = RUNNING_SHIELD[2:] if theme == 'light' else RUNNING_SHIELD[:2] # Alterei para mudar a cor de acordo com o tema;
+
         self.image = RUN_IMG[self.type][self.step_index // 5]
         self.dino_rect = self.image.get_rect()
         self.dino_rect.x = X_POS
@@ -94,10 +99,14 @@ class Dinosaur(Sprite):
         self.step_index += 1
 
 
-    def jump(self):
+    def jump(self, theme:str):
         """
-        Realiza o pulo do Dino.
+        Realiza o pulo do Dino. Modified by Eugênio Jefferson.
+        :theme - Recebe o tema atual, para definir a cor do Dino.
         """
+        JUMP_IMG[DEFAULT_TYPE] = JUMPING[1] if theme == 'light' else JUMPING[0] # Alterei para mudar a cor de acordo com o tema;
+        JUMP_IMG[SHIELD_TYPE] = JUMPING_SHIELD[1] if theme == 'light' else JUMPING_SHIELD[0] # Alterei para mudar a cor de acordo com o tema;
+
         self.image = JUMP_IMG[self.type]
         
         if self.dino_jump:
@@ -110,10 +119,14 @@ class Dinosaur(Sprite):
             self.jump_vel =  JUMP_VEL
 
 
-    def duck(self):
+    def duck(self, theme:str):
         """
-        Faz o Dino se abaixar.
+        Faz o Dino se abaixar. Modified by Eugênio Jefferson.
+        :theme - Recebe o tema atual, para definir a cor do Dino.
         """
+        DUCK_IMG[DEFAULT_TYPE] = DUCKING[2:] if theme == 'light' else DUCKING[:2] # Alterei para mudar a cor de acordo com o tema;
+        DUCK_IMG[SHIELD_TYPE] = DUCKING_SHIELD[2:] if theme == 'light' else DUCKING_SHIELD[:2] # Alterei para mudar a cor de acordo com o tema;
+
         self.image = DUCK_IMG[self.type][self.step_index // 5]
         self.dino_rect = self.image.get_rect()
         self.dino_rect.x = X_POS

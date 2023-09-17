@@ -10,13 +10,15 @@ class Obstacle_Manager: # Alterei o nome da classe de 'ObstacleManager' para 'Ob
         self.obstacles = []
         
 
-    def update(self, game):
+    def update(self, game, theme:str):
         """
-        Adiciona o obstáculo no jogo e verifica se o Dino bateu nele.
+        Adiciona o obstáculo no jogo e verifica se o Dino bateu nele. Modified by Eugênio Jefferson.
+        :theme - Recebe o tema atual, para definir a cor do obstáculo.
         """
+        self.theme = theme  # Criei para passar o valor do tema para a classe dos obstáculos;
         obstacle_type = [
-            Cactus(),
-            Bird()
+            Cactus(self.theme), # Alterei por causa do tema;
+            Bird(self.theme) # Alterei por causa do tema;
         ]
         
         if len(self.obstacles) == 0:

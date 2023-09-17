@@ -1,5 +1,6 @@
-import pygame
-from dino_runner.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS, DEFAULT_TYPE
+import pygame, random # Importem a biblioteca random
+# importei CLOUD e THEME_ICON
+from dino_runner.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS, DEFAULT_TYPE, CLOUD, THEME_ICON
 from dino_runner.components.dinosaur import Dinosaur
 from dino_runner.components.obstacles.obstacle_manager import Obstacle_Manager # Adicionei a pasta no caminho da importação
 from dino_runner.components.powerups.power_up_manager import PowerUpManager
@@ -12,9 +13,12 @@ class Game:
     """
 
     def __init__(self):
+        """
+        Constroe a classe game e seus atributos. Modified by Eugênio Jefferson.
+        """
         pygame.init()
         pygame.display.set_caption(TITLE)
-        pygame.display.set_icon(ICON)
+        pygame.display.set_icon(ICON[1])
 
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT)) 
         self.clock = pygame.time.Clock()
@@ -25,6 +29,14 @@ class Game:
         self.game_speed = 20
         self.x_pos_bg = 0
         self.y_pos_bg = 380
+
+        self.x_pos_clound = SCREEN_WIDTH # Adicionei a posição x para a movimentação da nuvem;
+        self.y_pos_clound = 5 # Adicionei a posição y para a movimentação da nuvem;
+        self.theme = 'light' # Adicionei para definir o tema inicial;
+        self.bg_color = (219, 216, 188) # Adicionei essa variável para trocar a cor do fundo de acordo com o tema;
+        self.font_color = (0, 0, 0) # Adicionei essa variável para trocar a cor da letra;
+        self.theme_icon = THEME_ICON[1] # Adicionei para mudar a cor da imagem de alteração do tema;
+
         self.player = Dinosaur()
         self.obstacle_manager = Obstacle_Manager()
         self.power_up_manager = PowerUpManager()
@@ -71,9 +83,12 @@ class Game:
 
 
     def update(self):
+        """
+        Atualiza as informações a cada loop. Modified by Eugênio Jefferson.
+        """
         user_input = pygame.key.get_pressed()
-        self.player.update(user_input)
-        self.obstacle_manager.update(self)
+        self.player.update(user_input, self.theme) # Alterei para mudar a cor de acordo com o tema;
+        self.obstacle_manager.update(self, self.theme) # Alterei para mudar a cor de acordo com o tema;
         self.update_score()
         self.power_up_manager.update(self.score, self.game_speed, self.player)
 
@@ -89,7 +104,7 @@ class Game:
         Desenha a tela.
         """
         self.clock.tick(FPS)
-        self.screen.fill((255, 255, 255))
+        self.screen.fill(self.bg_color) # Mudei a cor fixa para a variável;
         self.draw_background()
         self.player.draw(self.screen)
         self.obstacle_manager.draw(self.screen)
@@ -102,27 +117,44 @@ class Game:
 
     def draw_background(self):
         """
-        Desenha o fundo.
+        Desenha o fundo. Modified by Eugênio Jefferson.
         """
-        image_width = BG.get_width()
-        self.screen.blit(BG, (self.x_pos_bg, self.y_pos_bg))
-        self.screen.blit(BG, (image_width + self.x_pos_bg, self.y_pos_bg)) # Alterei como estava passando a posição, de '(image_width, self.x_pos_bg, self.y_pos_bg)' para '(image_width + self.x_pos_bg, self.y_pos_bg)'
+        # Muda a cor do chão
+        if self.theme == 'light':
+            bg_image = BG[1]
+            cloud_image = CLOUD[1]
 
-        if self.x_pos_bg <= - image_width:
-            self.screen.blit(BG, (image_width + self.x_pos_bg, self.y_pos_bg))
-            self.x_pos_bg = 0
+        elif self.theme == 'dark':
+            bg_image = BG[0]
+            cloud_image = CLOUD[0]
+
+        image_width = bg_image.get_width()
+        self.screen.blit(bg_image, (self.x_pos_bg, self.y_pos_bg)) # Alterei para se adaptar ao tema;
+        self.screen.blit(bg_image, (image_width + self.x_pos_bg, self.y_pos_bg)) # Alterei como estava passando a posição, de '(image_width, self.x_pos_bg, self.y_pos_bg)' para '(image_width + self.x_pos_bg, self.y_pos_bg)'
+        self.screen.blit(cloud_image, (self.x_pos_clound, self.y_pos_clound)) # Coloquei para inserir a nuvem na tela;
+        
+        if self.x_pos_bg >= -image_width: # Mudei de '<=' para '>=' para o fundo se movimentar
+            self.screen.blit(bg_image, (image_width + self.x_pos_bg, self.y_pos_bg))
             self.x_pos_bg -= self.game_speed
+            self.x_pos_clound -= self.game_speed # Adicionei para a nuvem se mover
+        
+        else: # Adicionei essa verificação para voltar as posições iniciais das imagens de fundo para continuarem se movimentando.
+            self.x_pos_bg = 0
+            self.x_pos_clound = SCREEN_WIDTH
+            self.y_pos_clound = random.randint(5, 60) # Cria a altura aleatória da nuvem.
 
+            
 
     def draw_score(self):
         """
         Desenha o componente do score na tela.
         """
         draw_message_component(
-            f"Score:{self.score}",
+            f"Pontuação:{self.score}",
             self.screen,
             pos_x_center = 1000,
-            pos_y_center = 50
+            pos_y_center = 50,
+            font_color= self.font_color
         )
 
 
@@ -139,7 +171,8 @@ class Game:
                     self.screen,
                     font_size = 18,
                     pos_x_center = 500,
-                    pos_y_center = 40
+                    pos_y_center = 40,
+                    font_color= self.font_color
                 )
 
             else:
@@ -149,7 +182,7 @@ class Game:
 
     def handle_events_on_menu(self):
         """
-        Gerencia os eventos que ocorrem no menu.
+        Gerencia os eventos que ocorrem no menu. Modified by Eugênio Jefferson.
         """
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -157,34 +190,75 @@ class Game:
                 self.running = False
 
             elif event.type == pygame.KEYDOWN:
-                self.run()
+                if pygame.key.get_mods() & pygame.KMOD_CTRL: # Verifica se CTRL + T foi pressionado e muda o tema;
+                    if event.key == pygame.K_t:
+                        self.change_theme()
+
+                else:
+                    self.run()
 
 
     def show_menu(self):
         """
-        Mostra menu de inicio ou de morte.
+        Mostra menu de inicio ou de morte. Modified by Eugênio Jefferson.
         """
-        self.screen.fill((255, 255, 255))
+        self.screen.fill(self.bg_color)
         half_screen_height = SCREEN_HEIGHT // 2
         half_screen_width = SCREEN_WIDTH // 2
         
         if self.death_count == 0:
-            draw_message_component("Pressione qualquer tecla para iniciar.", self.screen)
+            draw_message_component("Pressione qualquer tecla para iniciar.", self.screen, font_color= self.font_color)
+
+            # Adicionei instruções para o usuário poder alterar o tema.
+            self.screen.blit(self.theme_icon, (SCREEN_WIDTH - 125, SCREEN_HEIGHT - 135))
+            draw_message_component("Pressione 'CTRL + T'", self.screen, font_size=14, pos_x_center=SCREEN_WIDTH - 90, pos_y_center=SCREEN_HEIGHT - 50, font_color= self.font_color)
+            draw_message_component("para alterar o tema.", self.screen, font_size=14, pos_x_center=SCREEN_WIDTH - 90, pos_y_center=SCREEN_HEIGHT - 30, font_color= self.font_color)
+
+            draw_message_component("By Eugênio Jefferson", self.screen, font_size=13, pos_y_center=SCREEN_HEIGHT - 12, font_color= self.font_color) # Inseri minha marca d'água
         else:
-            draw_message_component("Pressione qualquer tecla para reiniciar.", self.screen, pos_y_center= half_screen_height + 140)
+            draw_message_component("Pressione qualquer tecla para reiniciar.", self.screen, pos_y_center= half_screen_height + 140, font_color= self.font_color)
             draw_message_component(
                 f"Sua pontuação: {self.score}",
                 self.screen,
-                pos_y_center= half_screen_height - 50
+                pos_y_center= half_screen_height - 50,
+                font_color= self.font_color
             )
             draw_message_component(
-                f"Contagem de vidas: {self.death_count}",
+                f"Contagem de mortes: {self.death_count}",
                 self.screen,
-                pos_y_center= half_screen_height - 100
+                pos_y_center= half_screen_height - 100,
+                font_color= self.font_color
             )
 
-            self.screen.blit(ICON, (half_screen_width - 40, half_screen_height - 30))
+            self.screen.blit(ICON[1] if self.theme == 'light' else ICON[0], (half_screen_width - 40, half_screen_height - 30)) # Modifiquei para trocar a cor
+
+            # Adicionei instruções para o usuário poder alterar o tema.
+            self.screen.blit(self.theme_icon, (SCREEN_WIDTH - 125, SCREEN_HEIGHT - 135))
+            draw_message_component("Pressione 'CTRL + T'", self.screen, font_size=14, pos_x_center=SCREEN_WIDTH - 90, pos_y_center=SCREEN_HEIGHT - 50, font_color= self.font_color)
+            draw_message_component("para alterar o tema.", self.screen, font_size=14, pos_x_center=SCREEN_WIDTH - 90, pos_y_center=SCREEN_HEIGHT - 30, font_color= self.font_color)
+
+            draw_message_component("By Eugênio Jefferson", self.screen, font_size=13, pos_y_center=SCREEN_HEIGHT - 12, font_color= self.font_color) # Inseri minha marca d'água
 
 
         pygame.display.flip()
         self.handle_events_on_menu()
+
+
+    def change_theme(self):
+        """
+        Altera entre o tema claro e escuro. By Eugênio Jefferson.
+        """
+        if self.theme == 'light':
+            self.theme = 'dark'
+            self.bg_color = (45, 45, 45)
+            self.font_color = (255, 255, 255)
+            self.theme_icon = THEME_ICON[0]
+        
+        elif self.theme == 'dark':
+            self.theme = 'light'
+            self.bg_color = (219, 216, 188)
+            self.font_color = (0, 0, 0)
+            self.theme_icon = THEME_ICON[1]
+
+           
+            
