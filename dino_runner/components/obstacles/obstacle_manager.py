@@ -29,7 +29,7 @@ class Obstacle_Manager: # Alterei o nome da classe de 'ObstacleManager' para 'Ob
 
             if game.player.dino_rect.colliderect(obstacle.rect):
                 if not game.player.has_power_up:
-                    pygame.time.delay(500)
+                    #pygame.time.delay(2000) Removi o delay daqui para suavizar a colisão;
                     game.playing = False
                     game.death_count += 1
                     break

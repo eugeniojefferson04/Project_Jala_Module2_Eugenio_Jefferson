@@ -1,6 +1,6 @@
 import pygame, random # Importem a biblioteca random
-# importei CLOUD e THEME_ICON
-from dino_runner.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS, DEFAULT_TYPE, CLOUD, THEME_ICON
+# importei CLOUD, THEME_ICON, GAME_OVER e RESET
+from dino_runner.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS, DEFAULT_TYPE, CLOUD, THEME_ICON, GAME_OVER, RESET
 from dino_runner.components.dinosaur import Dinosaur
 from dino_runner.components.obstacles.obstacle_manager import Obstacle_Manager # Adicionei a pasta no caminho da importação
 from dino_runner.components.powerups.power_up_manager import PowerUpManager
@@ -36,6 +36,8 @@ class Game:
         self.bg_color = (219, 216, 188) # Adicionei essa variável para trocar a cor do fundo de acordo com o tema;
         self.font_color = (0, 0, 0) # Adicionei essa variável para trocar a cor da letra;
         self.theme_icon = THEME_ICON[1] # Adicionei para mudar a cor da imagem de alteração do tema;
+        self.score_record = 0 # Adicionei essa variável para registrar o recorde de pontução;
+        self.reset_button = pygame.Rect(-1,-1,0,0) # Iniciei o botão de resete;
 
         self.player = Dinosaur()
         self.obstacle_manager = Obstacle_Manager()
@@ -57,7 +59,7 @@ class Game:
 
     def run(self):
         """
-        Inicia a corrida.
+        Inicia a corrida. Modified by Eugênio Jefferson.
         """
         self.playing = True
         self.obstacle_manager.reset_obstacles()
@@ -69,6 +71,13 @@ class Game:
             self.events()
             self.update()
             self.draw()
+
+        if not self.playing: # Adicionei o delay aqui para suavizar a colisão;
+            self.screen.blit(GAME_OVER, (SCREEN_WIDTH // 2 - GAME_OVER.get_width() // 2, SCREEN_HEIGHT // 2 - 240)) # Adicionei a imagem de game over;
+            pygame.display.update()
+            pygame.time.delay(1000)
+            pygame.event.clear() # Apaga eventos que estão na fila;
+                
 
 
     def events(self):
@@ -94,9 +103,15 @@ class Game:
 
 
     def update_score(self):
+        """
+        Gerencia a pontuação e velocidae do jogo. Modified by Eugênio Jefferson.
+        """
         self.score += 1
         if self.score % 100 == 0:
             self.game_speed += 5
+        
+        if self.score > self.score_record: # Adicionei a verificação se o recorde foi batido, e salva o novo recorde;
+            self.score_record = self.score
 
 
     def draw(self):
@@ -147,15 +162,19 @@ class Game:
 
     def draw_score(self):
         """
-        Desenha o componente do score na tela.
+        Desenha o componente do score na tela. Modified by Eugênio Jefferson.
         """
         draw_message_component(
-            f"Pontuação:{self.score}",
+            f"Pontuação: {self.score}",
             self.screen,
-            pos_x_center = 1000,
-            pos_y_center = 50,
+            pos_x_center = 950, # Alterei a posição.
+            pos_y_center = 30, # Alterei a posição.
             font_color= self.font_color
         )
+
+        if self.death_count > 0: # Inseri o recorde se o Dino tiver mais de uma morte;
+            draw_message_component(f"Recorde: {self.score_record}", self.screen, pos_x_center= 964, pos_y_center= 58, font_color= (67, 67, 67) if self.theme == 'light' else (180, 180, 180))
+
 
 
     def draw_power_up_time(self):
@@ -196,6 +215,10 @@ class Game:
 
                 else:
                     self.run()
+            
+            elif event.type == pygame.MOUSEBUTTONDOWN and pygame.BUTTON_LEFT:
+                if self.reset_button.collidepoint(event.pos):
+                    self.run()
 
 
     def show_menu(self):
@@ -216,20 +239,24 @@ class Game:
 
             draw_message_component("By Eugênio Jefferson", self.screen, font_size=13, pos_y_center=SCREEN_HEIGHT - 12, font_color= self.font_color) # Inseri minha marca d'água
         else:
-            draw_message_component("Pressione qualquer tecla para reiniciar.", self.screen, pos_y_center= half_screen_height + 140, font_color= self.font_color)
+            draw_message_component("Pressione qualquer tecla para reiniciar.", self.screen, pos_y_center= half_screen_height + 100, font_color= self.font_color)
             draw_message_component(
                 f"Sua pontuação: {self.score}",
                 self.screen,
                 pos_y_center= half_screen_height - 50,
                 font_color= self.font_color
             )
+            draw_message_component(f"Recorde: {self.score_record}", self.screen, pos_y_center= half_screen_height - 90, font_color= self.font_color) # Adicionei o recorde
             draw_message_component(
                 f"Contagem de mortes: {self.death_count}",
                 self.screen,
-                pos_y_center= half_screen_height - 100,
+                pos_y_center= half_screen_height - 130,
                 font_color= self.font_color
             )
 
+            reset_image = RESET[1] if self.theme == 'light' else RESET[0] # escolhe a cor da imagem de resete de acordo com o tema;
+            self.reset_button = self.screen.blit(reset_image, (half_screen_width - reset_image.get_width() // 2, half_screen_height + 140)) # Adicionei o botão de reset;
+            self.screen.blit(GAME_OVER, (half_screen_width - GAME_OVER.get_width() // 2, half_screen_height - 240)) # Adicionei a imagem de game over;
             self.screen.blit(ICON[1] if self.theme == 'light' else ICON[0], (half_screen_width - 40, half_screen_height - 30)) # Modifiquei para trocar a cor
 
             # Adicionei instruções para o usuário poder alterar o tema.

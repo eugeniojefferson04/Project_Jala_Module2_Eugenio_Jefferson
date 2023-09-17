@@ -112,3 +112,9 @@ THEME_ICON = [
     pygame.image.load(os.path.join(IMG_DIR, 'Other/Dark mode.png'))
 ] # Adicionei para pegar o icone do tema;
 
+GAME_OVER = pygame.image.load(os.path.join(IMG_DIR, 'Other/GameOver.png')) # Adicione a constante da imagem de game over;
+
+RESET = [
+    pygame.image.load(os.path.join(IMG_DIR, 'Other/Light Reset.png')),
+    pygame.image.load(os.path.join(IMG_DIR, 'Other/Dark Reset.png'))
+]
