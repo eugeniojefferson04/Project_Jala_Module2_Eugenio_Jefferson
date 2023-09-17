@@ -1,6 +1,7 @@
 import pygame, random
 from dino_runner.components.obstacles.cactus import Cactus
 from dino_runner.components.obstacles.bird import Bird
+from dino_runner.utils.constants import DINO_DEAD, DUCKING_DEAD, DEATH_SOUND # Importei para alterar a imagem do dino quando ele morrer, e tocar som;
 
 class Obstacle_Manager: # Alterei o nome da classe de 'ObstacleManager' para 'Obstacle_Manager', que é como está sendo chamada nos outros modulos
     """
@@ -29,9 +30,24 @@ class Obstacle_Manager: # Alterei o nome da classe de 'ObstacleManager' para 'Ob
 
             if game.player.dino_rect.colliderect(obstacle.rect):
                 if not game.player.has_power_up:
-                    #pygame.time.delay(2000) Removi o delay daqui para suavizar a colisão;
+                    # 1 - Altera a imagem quando o Dino morre
+                    x_pos = game.player.dino_rect.x
+                    y_pos = game.player.dino_rect.y
+                    
+                    if not game.player.dino_duck:
+                        game.player.image = DINO_DEAD[1] if theme == 'light' else DINO_DEAD[0]
+                    else: 
+                        #y_pos = 310
+                        game.player.image = DUCKING_DEAD[1] if theme == 'light' else DUCKING_DEAD[0]
+
+                    game.player.dino_rect = game.player.image.get_rect()
+                    game.player.dino_rect.x = x_pos
+                    game.player.dino_rect.y = y_pos
+                    # Fim 1
+                    #pygame.time.delay(2000) #Removi o delay daqui para suavizar a colisão;
                     game.playing = False
                     game.death_count += 1
+                    DEATH_SOUND.play() # toca som de morte;
                     break
 
                 else:

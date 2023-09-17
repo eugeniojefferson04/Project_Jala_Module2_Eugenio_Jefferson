@@ -1,6 +1,6 @@
 import pygame
 from pygame.sprite import Sprite # Removi '_Group' que não tem no modulo sprite
-from dino_runner.utils.constants import RUNNING, JUMPING, DUCKING, DEFAULT_TYPE, SHIELD_TYPE, DUCKING_SHIELD, JUMPING_SHIELD, RUNNING_SHIELD
+from dino_runner.utils.constants import RUNNING, JUMPING, DUCKING, DEFAULT_TYPE, SHIELD_TYPE, DUCKING_SHIELD, JUMPING_SHIELD, RUNNING_SHIELD, JUMP_SOUND # Importei JUMP_SOUND
 
 DUCK_IMG = {
     DEFAULT_TYPE: DUCKING,
@@ -69,6 +69,7 @@ class Dinosaur(Sprite):
             self.dino_run = False
             self.dino_jump = True
             self.dino_duck = False
+            JUMP_SOUND.play() # Toca o som do pulo;
 
         elif user_input[pygame.K_DOWN] and not self.dino_jump:
             self.dino_run = False

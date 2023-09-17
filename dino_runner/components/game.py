@@ -1,6 +1,6 @@
 import pygame, random # Importem a biblioteca random
-# importei CLOUD, THEME_ICON, GAME_OVER e RESET
-from dino_runner.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS, DEFAULT_TYPE, CLOUD, THEME_ICON, GAME_OVER, RESET
+# importei CLOUD, THEME_ICON, GAME_OVER, RESET, SCORE_SOUND, ARROW_KEY, DINO_RUNNER
+from dino_runner.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS, DEFAULT_TYPE, CLOUD, THEME_ICON, GAME_OVER, RESET, SCORE_SOUND, ARROW_KEY, DINO_RUNNER
 from dino_runner.components.dinosaur import Dinosaur
 from dino_runner.components.obstacles.obstacle_manager import Obstacle_Manager # Adicionei a pasta no caminho da importação
 from dino_runner.components.powerups.power_up_manager import PowerUpManager
@@ -30,8 +30,10 @@ class Game:
         self.x_pos_bg = 0
         self.y_pos_bg = 380
 
-        self.x_pos_clound = SCREEN_WIDTH # Adicionei a posição x para a movimentação da nuvem;
-        self.y_pos_clound = 5 # Adicionei a posição y para a movimentação da nuvem;
+        self.x_pos_clound1 = SCREEN_WIDTH # Adicionei a posição x para a movimentação da nuvem;
+        self.y_pos_clound1 = 5 # Adicionei a posição y para a movimentação da nuvem;
+        self.x_pos_clound2 = SCREEN_WIDTH + 900 # Adicionei a posição x para a movimentação da nuvem2;
+        self.y_pos_clound2 = 20 # Adicionei a posição y para a movimentação da nuvem2;
         self.theme = 'light' # Adicionei para definir o tema inicial;
         self.bg_color = (219, 216, 188) # Adicionei essa variável para trocar a cor do fundo de acordo com o tema;
         self.font_color = (0, 0, 0) # Adicionei essa variável para trocar a cor da letra;
@@ -108,7 +110,8 @@ class Game:
         """
         self.score += 1
         if self.score % 100 == 0:
-            self.game_speed += 5
+            self.game_speed += 3 # abaixei a velocidade do jogo;
+            SCORE_SOUND.play() # toca som quando a pontuação aumenta;
         
         if self.score > self.score_record: # Adicionei a verificação se o recorde foi batido, e salva o novo recorde;
             self.score_record = self.score
@@ -121,11 +124,11 @@ class Game:
         self.clock.tick(FPS)
         self.screen.fill(self.bg_color) # Mudei a cor fixa para a variável;
         self.draw_background()
-        self.player.draw(self.screen)
         self.obstacle_manager.draw(self.screen)
         self.draw_score()
         self.draw_power_up_time()
         self.power_up_manager.draw(self.screen)
+        self.player.draw(self.screen) # Alterei a ordem para o Dino fica em cima do obstáculo
         pygame.display.update()
         pygame.display.flip()
 
@@ -146,17 +149,21 @@ class Game:
         image_width = bg_image.get_width()
         self.screen.blit(bg_image, (self.x_pos_bg, self.y_pos_bg)) # Alterei para se adaptar ao tema;
         self.screen.blit(bg_image, (image_width + self.x_pos_bg, self.y_pos_bg)) # Alterei como estava passando a posição, de '(image_width, self.x_pos_bg, self.y_pos_bg)' para '(image_width + self.x_pos_bg, self.y_pos_bg)'
-        self.screen.blit(cloud_image, (self.x_pos_clound, self.y_pos_clound)) # Coloquei para inserir a nuvem na tela;
+        self.screen.blit(cloud_image, (self.x_pos_clound1, self.y_pos_clound1)) # Coloquei para inserir a nuvem na tela;
+        self.screen.blit(cloud_image, (self.x_pos_clound2, self.y_pos_clound2)) # Coloquei para inserir a nuvem 2 na tela;
         
         if self.x_pos_bg >= -image_width: # Mudei de '<=' para '>=' para o fundo se movimentar
             self.screen.blit(bg_image, (image_width + self.x_pos_bg, self.y_pos_bg))
             self.x_pos_bg -= self.game_speed
-            self.x_pos_clound -= self.game_speed # Adicionei para a nuvem se mover
+            self.x_pos_clound1 -= self.game_speed # Adicionei para a nuvem se mover
+            self.x_pos_clound2 -= self.game_speed # Adicionei para a nuvem 2 se mover
         
         else: # Adicionei essa verificação para voltar as posições iniciais das imagens de fundo para continuarem se movimentando.
             self.x_pos_bg = 0
-            self.x_pos_clound = SCREEN_WIDTH
-            self.y_pos_clound = random.randint(5, 60) # Cria a altura aleatória da nuvem.
+            self.x_pos_clound1 = SCREEN_WIDTH
+            self.y_pos_clound1 = random.randint(5, 60) # Cria a altura aleatória da nuvem.
+            self.x_pos_clound2 = SCREEN_WIDTH + 900
+            self.y_pos_clound2 = random.randint(5, 60) # Cria a altura aleatória da nuvem.
 
             
 
@@ -230,6 +237,8 @@ class Game:
         half_screen_width = SCREEN_WIDTH // 2
         
         if self.death_count == 0:
+            self.screen.blit(DINO_RUNNER, (half_screen_width - DINO_RUNNER.get_width() // 2, half_screen_height - 200)) # Adicionei a imagem de título;
+
             draw_message_component("Pressione qualquer tecla para iniciar.", self.screen, font_color= self.font_color)
 
             # Adicionei instruções para o usuário poder alterar o tema.
@@ -237,6 +246,11 @@ class Game:
             draw_message_component("Pressione 'CTRL + T'", self.screen, font_size=14, pos_x_center=SCREEN_WIDTH - 90, pos_y_center=SCREEN_HEIGHT - 50, font_color= self.font_color)
             draw_message_component("para alterar o tema.", self.screen, font_size=14, pos_x_center=SCREEN_WIDTH - 90, pos_y_center=SCREEN_HEIGHT - 30, font_color= self.font_color)
 
+            # 1 - Instruções de jogo
+            self.screen.blit(ARROW_KEY, (28, SCREEN_HEIGHT - 136))
+            draw_message_component("Use as setas para", self.screen, font_size=14, pos_x_center=78, pos_y_center=SCREEN_HEIGHT - 50, font_color= self.font_color)
+            draw_message_component("cima e para baixo.", self.screen, font_size=14, pos_x_center=78.5, pos_y_center=SCREEN_HEIGHT - 30, font_color= self.font_color)
+            # Fim 1
             draw_message_component("By Eugênio Jefferson", self.screen, font_size=13, pos_y_center=SCREEN_HEIGHT - 12, font_color= self.font_color) # Inseri minha marca d'água
         else:
             draw_message_component("Pressione qualquer tecla para reiniciar.", self.screen, pos_y_center= half_screen_height + 100, font_color= self.font_color)
