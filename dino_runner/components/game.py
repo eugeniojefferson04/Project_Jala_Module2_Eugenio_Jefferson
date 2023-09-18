@@ -9,7 +9,7 @@ from dino_runner.utils.text_utils import draw_message_component # Importei a fun
 
 class Game:
     """
-    Gerencia as interfaces e os eventos do jogo
+    Gerencia as interfaces e os eventos do jogo. Modified by Eugênio Jefferson.
     """
 
     def __init__(self):
@@ -40,6 +40,7 @@ class Game:
         self.theme_icon = THEME_ICON[1] # Adicionei para mudar a cor da imagem de alteração do tema;
         self.score_record = 0 # Adicionei essa variável para registrar o recorde de pontução;
         self.reset_button = pygame.Rect(-1,-1,0,0) # Iniciei o botão de resete;
+        self.score_control = 0 # Variável para reduzir a velocidade do score
 
         self.player = Dinosaur()
         self.obstacle_manager = Obstacle_Manager()
@@ -77,7 +78,7 @@ class Game:
         if not self.playing: # Adicionei o delay aqui para suavizar a colisão;
             self.screen.blit(GAME_OVER, (SCREEN_WIDTH // 2 - GAME_OVER.get_width() // 2, SCREEN_HEIGHT // 2 - 240)) # Adicionei a imagem de game over;
             pygame.display.update()
-            pygame.time.delay(1000)
+            pygame.time.delay(1500)
             pygame.event.clear() # Apaga eventos que estão na fila;
                 
 
@@ -108,9 +109,14 @@ class Game:
         """
         Gerencia a pontuação e velocidae do jogo. Modified by Eugênio Jefferson.
         """
-        self.score += 1
-        if self.score % 100 == 0:
-            self.game_speed += 3 # abaixei a velocidade do jogo;
+        self.score_control += 1
+        if self.score_control == 4:
+            self.score += 1
+            self.score_control = 0
+        #self.score += 1
+
+        if self.score % 100 == 0 and self.score != 0 and self.score_control == 0: # alterei para diminui a velocidade do jogo;
+            self.game_speed += 3 # alterei o valor
             SCORE_SOUND.play() # toca som quando a pontuação aumenta;
         
         if self.score > self.score_record: # Adicionei a verificação se o recorde foi batido, e salva o novo recorde;

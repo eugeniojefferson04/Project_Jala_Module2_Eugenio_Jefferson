@@ -1,20 +1,24 @@
 import pygame
 from pygame.sprite import Sprite # Removi '_Group' que não tem no modulo sprite
-from dino_runner.utils.constants import RUNNING, JUMPING, DUCKING, DEFAULT_TYPE, SHIELD_TYPE, DUCKING_SHIELD, JUMPING_SHIELD, RUNNING_SHIELD, JUMP_SOUND # Importei JUMP_SOUND
+# Importei JUMP_SOUND, HAMMER_TYPE, RUNNING_HAMMER, JUMPING_HAMMER, DUCKING_HAMMER
+from dino_runner.utils.constants import RUNNING, JUMPING, DUCKING, DEFAULT_TYPE, SHIELD_TYPE, DUCKING_SHIELD, JUMPING_SHIELD, RUNNING_SHIELD, JUMP_SOUND, HAMMER_TYPE, RUNNING_HAMMER, JUMPING_HAMMER, DUCKING_HAMMER
 
 DUCK_IMG = {
     DEFAULT_TYPE: DUCKING,
-    SHIELD_TYPE: DUCKING_SHIELD
+    SHIELD_TYPE: DUCKING_SHIELD,
+    HAMMER_TYPE: DUCKING_HAMMER # Para colocar a imagem do Dino abaixado com o martelo
 }
 
 JUMP_IMG = {
     DEFAULT_TYPE: JUMPING,
-    SHIELD_TYPE: JUMPING_SHIELD
+    SHIELD_TYPE: JUMPING_SHIELD,
+    HAMMER_TYPE: JUMPING_HAMMER # Para colocar a imagem do Dino pulando com o martelo
 }
 
 RUN_IMG = {
     DEFAULT_TYPE: RUNNING,
-    SHIELD_TYPE: RUNNING_SHIELD
+    SHIELD_TYPE: RUNNING_SHIELD,
+    HAMMER_TYPE: RUNNING_HAMMER # Para colocar a imagem do Dino correndo com o martelo
 }
 
 X_POS = 80
@@ -24,7 +28,7 @@ JUMP_VEL = 8.5
 
 class Dinosaur(Sprite):
     """
-    Cria e gerencia o Dino.
+    Cria e gerencia o Dino. Modified by Eugênio Jefferson.
     """
     def __init__(self):
         self.type = DEFAULT_TYPE
@@ -43,10 +47,11 @@ class Dinosaur(Sprite):
 
     def setup_state(self):
         """
-        Define os status iniciais dos itens.
+        Define os status iniciais dos itens. Modified by Eugênio Jefferson.
         """
         self.has_power_up = False 
         self.shield = False 
+        self.hammer = False # Adicionei essa variável para ter o item hammer;
         self.show_text = False
         self.shield_time_up = 0 
         
@@ -92,6 +97,7 @@ class Dinosaur(Sprite):
         """
         RUN_IMG[DEFAULT_TYPE] = RUNNING[2:] if theme == 'light' else RUNNING[:2] # Alterei para mudar a cor de acordo com o tema;
         RUN_IMG[SHIELD_TYPE] = RUNNING_SHIELD[2:] if theme == 'light' else RUNNING_SHIELD[:2] # Alterei para mudar a cor de acordo com o tema;
+        RUN_IMG[HAMMER_TYPE] = RUNNING_HAMMER[2:] if theme == 'light' else RUNNING_HAMMER[:2] # Alterei para mudar a cor de acordo com o tema;
 
         self.image = RUN_IMG[self.type][self.step_index // 5]
         self.dino_rect = self.image.get_rect()
@@ -107,6 +113,7 @@ class Dinosaur(Sprite):
         """
         JUMP_IMG[DEFAULT_TYPE] = JUMPING[1] if theme == 'light' else JUMPING[0] # Alterei para mudar a cor de acordo com o tema;
         JUMP_IMG[SHIELD_TYPE] = JUMPING_SHIELD[1] if theme == 'light' else JUMPING_SHIELD[0] # Alterei para mudar a cor de acordo com o tema;
+        JUMP_IMG[HAMMER_TYPE] = JUMPING_HAMMER[1] if theme == 'light' else JUMPING_HAMMER[0] # Alterei para mudar a cor de acordo com o tema;
 
         self.image = JUMP_IMG[self.type]
         
@@ -127,6 +134,7 @@ class Dinosaur(Sprite):
         """
         DUCK_IMG[DEFAULT_TYPE] = DUCKING[2:] if theme == 'light' else DUCKING[:2] # Alterei para mudar a cor de acordo com o tema;
         DUCK_IMG[SHIELD_TYPE] = DUCKING_SHIELD[2:] if theme == 'light' else DUCKING_SHIELD[:2] # Alterei para mudar a cor de acordo com o tema;
+        DUCK_IMG[HAMMER_TYPE] = DUCKING_HAMMER[2:] if theme == 'light' else DUCKING_HAMMER[:2] # Alterei para mudar a cor de acordo com o tema;
 
         self.image = DUCK_IMG[self.type][self.step_index // 5]
         self.dino_rect = self.image.get_rect()

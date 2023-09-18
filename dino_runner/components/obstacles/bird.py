@@ -4,7 +4,7 @@ from dino_runner.components.obstacles.obstacle import Obstacle
 
 class Bird(Obstacle):
     """
-    Cria o objeto do pássaro.
+    Cria o objeto do pássaro. Modified by Eugênio Jefferson.
     """
     def __init__(self, theme:str):
         """

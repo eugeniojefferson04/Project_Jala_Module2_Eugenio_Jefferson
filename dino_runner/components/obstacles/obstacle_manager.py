@@ -5,7 +5,7 @@ from dino_runner.utils.constants import DINO_DEAD, DUCKING_DEAD, DEATH_SOUND # I
 
 class Obstacle_Manager: # Alterei o nome da classe de 'ObstacleManager' para 'Obstacle_Manager', que é como está sendo chamada nos outros modulos
     """
-    Gerencia os obstaculos.
+    Gerencia os obstaculos. Modified by Eugênio Jefferson.
     """
     def __init__(self):
         self.obstacles = []

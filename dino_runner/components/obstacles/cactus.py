@@ -6,7 +6,7 @@ from dino_runner.components.obstacles.obstacle import Obstacle
 
 class Cactus(Obstacle):
     """
-    Cria o objeto do cacto.
+    Cria o objeto do cacto. Modified by Eugênio Jefferson.
     """
 
     CACTUS = [

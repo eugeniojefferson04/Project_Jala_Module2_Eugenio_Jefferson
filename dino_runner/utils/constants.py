@@ -29,9 +29,11 @@ RUNNING_SHIELD = [
 ] # Alterei por causa do tema;
 
 RUNNING_HAMMER = [
-    pygame.image.load(os.path.join(DIR, "Dino/DinoDuck1Hammer.png")),
-    pygame.image.load(os.path.join(DIR, "Dino/Dark DinoRun2.png")),
-]
+    pygame.image.load(os.path.join(DIR, "Dino/Light DinoRun1Hammer.png")),
+    pygame.image.load(os.path.join(DIR, "Dino/Light DinoRun2Hammer1.png")),
+    pygame.image.load(os.path.join(DIR, "Dino/Dark DinoRun1Hammer.png")),
+    pygame.image.load(os.path.join(DIR, "Dino/Dark DinoRun2Hammer1.png"))
+] # Alterei por causa do tema;
 
 JUMPING = [
     pygame.image.load(os.path.join(DIR, "Dino/Light DinoJump.png")),
@@ -43,7 +45,10 @@ JUMPING_SHIELD = [
     pygame.image.load(os.path.join(DIR, "Dino/Dark DinoJumpShield.png"))
 ] # Alterei por causa do tema;
 
-JUMPING_HAMMER = pygame.image.load(os.path.join(DIR, "Dino/DinoJumpHammer.png"))
+JUMPING_HAMMER = [
+    pygame.image.load(os.path.join(DIR, "Dino/Light DinoJumpHammer.png")),
+    pygame.image.load(os.path.join(DIR, "Dino/Dark DinoJumpHammer.png"))
+] # Alterei por causa do tema;
 
 DUCKING = [
     pygame.image.load(os.path.join(DIR, "Dino/Light DinoDuck1.png")),
@@ -60,9 +65,11 @@ DUCKING_SHIELD = [
 ] # Alterei por causa do tema;
 
 DUCKING_HAMMER = [
-    pygame.image.load(os.path.join(DIR, "Dino/DinoDuck1Hammer.png")),
-    pygame.image.load(os.path.join(DIR, "Dino/Dark DinoDuck2.png")),
-]
+    pygame.image.load(os.path.join(DIR, "Dino/Light DinoDuck1Hammer.png")),
+    pygame.image.load(os.path.join(DIR, "Dino/Light DinoDuck2Hammer.png")),
+    pygame.image.load(os.path.join(DIR, "Dino/Dark DinoDuck1Hammer.png")),
+    pygame.image.load(os.path.join(DIR, "Dino/Dark DinoDuck2Hammer.png"))
+] # Alterei por causa do tema;
 
 SMALL_CACTUS = [
     pygame.image.load(os.path.join(DIR, "Cactus/Light SmallCactus1.png")),
@@ -106,6 +113,7 @@ HEART = pygame.image.load(os.path.join(DIR, 'Other/SmallHeart.png'))
 
 DEFAULT_TYPE = "default"
 SHIELD_TYPE = "Escudo" # Traduzi
+HAMMER_TYPE = "Martelo" # Adicionei o tipo do hammer;
 
 THEME_ICON = [
     pygame.image.load(os.path.join(DIR, 'Other/Light mode.png')),
