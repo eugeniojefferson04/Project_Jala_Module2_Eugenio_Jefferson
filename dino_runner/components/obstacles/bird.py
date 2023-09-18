@@ -1,5 +1,6 @@
 from dino_runner.utils.constants import BIRD
 from dino_runner.components.obstacles.obstacle import Obstacle
+from random import randint
 
 
 class Bird(Obstacle):
@@ -13,7 +14,7 @@ class Bird(Obstacle):
         """
         bird_image = BIRD[2:] if theme == 'light' else BIRD[:2]
         super().__init__(bird_image, 0) # Alterei para mudar a cor de acordo com o tema;
-        self.rect.y = 250
+        self.rect.y = randint(220, 300) # Coloquei um randint para o pássaro vim na altura aleatória;
         self.step_index = 0
 
     def draw(self, screen):

@@ -114,6 +114,7 @@ HEART = pygame.image.load(os.path.join(DIR, 'Other/SmallHeart.png'))
 DEFAULT_TYPE = "default"
 SHIELD_TYPE = "Escudo" # Traduzi
 HAMMER_TYPE = "Martelo" # Adicionei o tipo do hammer;
+HEART_TYPE = "Coração" # Adicionei o tipo do coração;
 
 THEME_ICON = [
     pygame.image.load(os.path.join(DIR, 'Other/Light mode.png')),

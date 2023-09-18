@@ -1,6 +1,7 @@
 import random, pygame
 from dino_runner.components.powerups.shield import Shield
 from dino_runner.components.powerups.hammer import Hammer
+from dino_runner.components.powerups.heart import Heart
 
 class PowerUpManager:
     """
@@ -17,12 +18,13 @@ class PowerUpManager:
         """
         power_up_type = [
             Shield(),
-            Hammer()
+            Hammer(),
+            Heart()
         ] # Criei essa lista com os tipos de itens disponíveis;
 
         if len(self.power_ups) == 0 and self.when_appars == score:
             self.when_appars += random.randint(80, 100) # Alterei o valor da chance de aparecer um item;
-            self.power_ups.append(power_up_type[random.randint(0,1)]) # Alterei para escolher um item aleatório;
+            self.power_ups.append(power_up_type[random.randint(2,2)]) # Alterei para escolher um item aleatório;
 
 
     def update(self, score, game_speed, player):
@@ -40,13 +42,25 @@ class PowerUpManager:
                 # 1- Verifica o tipo do item e ativa ele
                 if power_up.type == "Escudo":
                     player.shield = True
+                
                 if power_up.type == "Martelo":
                     player.hammer = True
-                # Fim 1
-                player.has_power_up = True
-                player.type = power_up.type
-                player.power_up_timing = power_up.start_time + (power_up.duration * 1000)
+
+                if power_up.type == "Coração":
+                    player.heart = True
+                
+                if player.shield or player.hammer:
+                    player.has_power_up = True
+                    player.type = power_up.type
+                    player.power_up_timing = power_up.start_time + (power_up.duration * 1000)
+                
+                if player.heart:
+                    player.type = power_up.type
+                    
+
                 self.power_ups.remove(power_up)
+
+                # Fim 1
 
 
     def draw(self, screen):

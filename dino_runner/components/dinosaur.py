@@ -52,6 +52,7 @@ class Dinosaur(Sprite):
         self.has_power_up = False 
         self.shield = False 
         self.hammer = False # Adicionei essa variável para ter o item hammer;
+        self.heart = False # Adicionei essa variável para ter o item do coração;
         self.show_text = False
         self.shield_time_up = 0 
         
