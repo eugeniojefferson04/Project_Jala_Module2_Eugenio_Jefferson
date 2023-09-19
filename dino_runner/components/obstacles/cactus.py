@@ -19,8 +19,8 @@ class Cactus(Obstacle):
         Constrói um cacto. Modified by Eugênio Jefferson.
         :theme - Recebe o tema atual, para definir a cor do cacto.
         """
-        self.CACTUS[0] = (LARGE_CACTUS[3:] if theme == 'light' else LARGE_CACTUS[:3], 300)
-        self.CACTUS[1] = (SMALL_CACTUS[3:] if theme == 'light' else SMALL_CACTUS[:3], 325)
+        self.CACTUS[0] = (LARGE_CACTUS[3:] if theme == 'light' else LARGE_CACTUS[:3], 300) # Para alterar o tema
+        self.CACTUS[1] = (SMALL_CACTUS[3:] if theme == 'light' else SMALL_CACTUS[:3], 325) # Para alterar o tema
 
         image, cactus_pos = self.CACTUS[random.randint(0, 1)]
         self.type = random.randint(0, 2)

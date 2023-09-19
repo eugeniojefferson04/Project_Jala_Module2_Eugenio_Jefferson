@@ -42,8 +42,8 @@ class Obstacle_Manager: # Alterei o nome da classe de 'ObstacleManager' para 'Ob
                         
                         if not game.player.dino_duck:
                             game.player.image = DINO_DEAD[1] if theme == 'light' else DINO_DEAD[0]
+                            
                         else: 
-                            #y_pos = 310
                             game.player.image = DUCKING_DEAD[1] if theme == 'light' else DUCKING_DEAD[0]
 
                         game.player.dino_rect = game.player.image.get_rect()

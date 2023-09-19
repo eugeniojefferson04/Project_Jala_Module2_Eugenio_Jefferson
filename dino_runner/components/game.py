@@ -116,7 +116,6 @@ class Game:
         if self.score_control == 4:
             self.score += 1
             self.score_control = 0
-        #self.score += 1
 
         if self.score % 100 == 0 and self.score != 0 and self.score_control == 0: # alterei para diminui a velocidade do jogo;
             self.game_speed += 3 # alterei o valor
@@ -128,7 +127,7 @@ class Game:
 
     def draw(self):
         """
-        Desenha a tela.
+        Desenha a tela. Modified by Eugênio Jefferson.
         """
         self.clock.tick(FPS)
         self.screen.fill(self.bg_color) # Mudei a cor fixa para a variável;
