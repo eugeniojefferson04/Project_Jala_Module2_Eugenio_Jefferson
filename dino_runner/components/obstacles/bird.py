@@ -14,7 +14,7 @@ class Bird(Obstacle):
         """
         bird_image = BIRD[2:] if theme == 'light' else BIRD[:2]
         super().__init__(bird_image, 0) # Alterei para mudar a cor de acordo com o tema;
-        self.rect.y = randint(245, 300) # Coloquei um randint para o pássaro vim na altura aleatória;
+        self.rect.y = randint(210, 300) # Coloquei um randint para o pássaro vim na altura aleatória;
         self.step_index = 0
 
     def draw(self, screen):

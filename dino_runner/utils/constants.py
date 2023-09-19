@@ -142,16 +142,24 @@ DUCKING_DEAD = [
     pygame.image.load(os.path.join(DIR, 'Dino/Dark Dead DinoDuck.png'))
 ] # Adicionei para alterar a imagem do Dino quando ele morre abaixado;
 
-pygame.mixer.init() # Iniciar o tocador de som;
+try: # Adicionei esse tratamento, pois ao rodar o jogo no computador que não tem dispositivo de som ele gera um erro da biblioteca do pygame.mixer
+    pygame.mixer.init() # Iniciar o tocador de som;
 
-JUMP_SOUND = pygame.mixer.Sound(os.path.join(DIR, 'Sounds/Jump.wav')) # Adicionei para carregar o arquivo de som do pulo;
-JUMP_SOUND.set_volume(0.3) # Aumenta o volume;
+    JUMP_SOUND = pygame.mixer.Sound(os.path.join(DIR, 'Sounds/Jump.wav')) # Adicionei para carregar o arquivo de som do pulo;
+    JUMP_SOUND.set_volume(0.3) # Aumenta o volume;
 
-DEATH_SOUND = pygame.mixer.Sound(os.path.join(DIR, 'Sounds/Death.wav')) # Adicionei para carregar o arquivo de som de morte;
-DEATH_SOUND.set_volume(1) # Aumenta o volume;
+    DEATH_SOUND = pygame.mixer.Sound(os.path.join(DIR, 'Sounds/Death.wav')) # Adicionei para carregar o arquivo de som de morte;
+    DEATH_SOUND.set_volume(1) # Aumenta o volume;
 
-SCORE_SOUND = pygame.mixer.Sound(os.path.join(DIR, 'Sounds/Score.wav')) # Adicionei para carregar o arquivo de som de quando a pontuação aumenta;
-SCORE_SOUND.set_volume(0.2) # Aumenta o volume;
+    SCORE_SOUND = pygame.mixer.Sound(os.path.join(DIR, 'Sounds/Score.wav')) # Adicionei para carregar o arquivo de som de quando a pontuação aumenta;
+    SCORE_SOUND.set_volume(0.2) # Aumenta o volume;
+except:
+    class j:
+        def play(self):
+            pass
+    JUMP_SOUND = j()
+    DEATH_SOUND = j()
+    SCORE_SOUND = j()
 
 ARROW_KEY = pygame.image.load(os.path.join(DIR, 'Other/Arrow Keys.png')) # Imagem de setas para jogar;
 

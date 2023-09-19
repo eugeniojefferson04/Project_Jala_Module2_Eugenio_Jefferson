@@ -13,7 +13,7 @@ class PowerUp(Sprite):
         self.rect.x = SCREEN_WIDTH + random.randint(400, 800) # alterei o valor da posição
         self.rect.y = random.randint(125, 175)
         self.start_time = 0
-        self.duration = random.randint(5, 10)
+        self.duration = random.randint(3, 6) # Diminui o tempo de duração
         self.type2 = type2 # para adicionar um segundo tipo
 
 

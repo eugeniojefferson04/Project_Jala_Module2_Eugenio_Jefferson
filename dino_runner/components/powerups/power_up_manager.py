@@ -24,20 +24,21 @@ class PowerUpManager:
 
         if len(self.power_ups) == 0 and self.when_appars == score:
             self.when_appars += random.randint(80, 100) # Alterei o valor da chance de aparecer um item;
-            # 1- Alterei para escolher um item aleatório;
-            index = random.randint(0,2)
+            # 1- Alterei para escolher um item aleatório; (RETIREI)
+            #index = random.randint(0,2)
 
-            if index == 2 and random.randint(0, 99) < 40:
-                index = 2
+            # if index == 2 and random.randint(0, 99) < 70:
+            #     index = 2
 
-            elif index == 2:
-                index = 5
+            # elif index == 2:
+            #     index = 5
 
-            try:
-                self.power_ups.append(power_up_type[index]) 
-            except Exception as e:
-                pass
+            # try:
+            #     self.power_ups.append(power_up_type[index]) 
+            # except Exception as e:
+            #     pass
             # Fim 1
+            self.power_ups.append(power_up_type[random.randint(0,2)])
 
 
     def update(self, score, game_speed, player, heart):
@@ -55,13 +56,20 @@ class PowerUpManager:
                 # 1- Verifica o tipo do item e ativa ele
                 if power_up.type == "Escudo":
                     player.shield = True
+                    player.hammer = False
+                    player.heart = False
                 
                 if power_up.type == "Martelo":
                     player.hammer = True
+                    player.shield = False
+                    player.heart = False
 
                 if power_up.type2 == "Coração":
                     player.heart = True
+                    player.shield = False
+                    player.hammer = False
                     player.type2 = power_up.type2
+                    #player.type = power_up.type
                     heart.update_life(collected=True)
                 
                 if player.shield or player.hammer:
