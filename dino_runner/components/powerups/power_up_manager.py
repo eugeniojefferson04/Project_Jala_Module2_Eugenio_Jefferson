@@ -24,10 +24,23 @@ class PowerUpManager:
 
         if len(self.power_ups) == 0 and self.when_appars == score:
             self.when_appars += random.randint(80, 100) # Alterei o valor da chance de aparecer um item;
-            self.power_ups.append(power_up_type[random.randint(2,2)]) # Alterei para escolher um item aleatório;
+            # 1- Alterei para escolher um item aleatório;
+            index = random.randint(0,2)
+
+            if index == 2 and random.randint(0, 99) < 40:
+                index = 2
+
+            elif index == 2:
+                index = 5
+
+            try:
+                self.power_ups.append(power_up_type[index]) 
+            except Exception as e:
+                pass
+            # Fim 1
 
 
-    def update(self, score, game_speed, player):
+    def update(self, score, game_speed, player, heart):
         """
         Gerencia os itens, verifica se foram coletados ou não. Modified by Eugênio Jefferson.
         """
@@ -37,8 +50,8 @@ class PowerUpManager:
             power_up.update(game_speed, self.power_ups)
             
             if player.dino_rect.colliderect(power_up.rect):
-                
                 power_up.start_time = pygame.time.get_ticks()
+
                 # 1- Verifica o tipo do item e ativa ele
                 if power_up.type == "Escudo":
                     player.shield = True
@@ -46,20 +59,17 @@ class PowerUpManager:
                 if power_up.type == "Martelo":
                     player.hammer = True
 
-                if power_up.type == "Coração":
+                if power_up.type2 == "Coração":
                     player.heart = True
+                    player.type2 = power_up.type2
+                    heart.update_life(collected=True)
                 
                 if player.shield or player.hammer:
                     player.has_power_up = True
                     player.type = power_up.type
-                    player.power_up_timing = power_up.start_time + (power_up.duration * 1000)
-                
-                if player.heart:
-                    player.type = power_up.type
-                    
+                    player.power_up_timing = power_up.start_time + (power_up.duration * 1000)                   
 
                 self.power_ups.remove(power_up)
-
                 # Fim 1
 
 

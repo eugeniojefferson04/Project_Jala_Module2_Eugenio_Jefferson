@@ -109,7 +109,11 @@ BG = [
     pygame.image.load(os.path.join(DIR, 'Other/Dark Track.png'))
 ] # Alterei para mudar de tema;
 
-HEART = pygame.image.load(os.path.join(DIR, 'Other/SmallHeart.png'))
+HEART = [
+    pygame.image.load(os.path.join(DIR, 'Other/Black SmallHeart.png')),
+    pygame.image.load(os.path.join(DIR, 'Other/Red SmallHeart.png')),
+    pygame.image.load(os.path.join(DIR, 'Other/Red Heart.png'))
+] # Adicionei mais imagens do coração
 
 DEFAULT_TYPE = "default"
 SHIELD_TYPE = "Escudo" # Traduzi

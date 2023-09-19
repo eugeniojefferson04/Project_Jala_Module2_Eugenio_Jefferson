@@ -5,6 +5,7 @@ from dino_runner.components.dinosaur import Dinosaur
 from dino_runner.components.obstacles.obstacle_manager import Obstacle_Manager # Adicionei a pasta no caminho da importação
 from dino_runner.components.powerups.power_up_manager import PowerUpManager
 from dino_runner.utils.text_utils import draw_message_component # Importei a função 'draw_message_component' pois estamos chamando ela
+from dino_runner.components.powerups.heart import Heart # Para gerenciar os corações
 
 
 class Game:
@@ -41,6 +42,7 @@ class Game:
         self.score_record = 0 # Adicionei essa variável para registrar o recorde de pontução;
         self.reset_button = pygame.Rect(-1,-1,0,0) # Iniciei o botão de resete;
         self.score_control = 0 # Variável para reduzir a velocidade do score
+        self.heart = Heart()
 
         self.player = Dinosaur()
         self.obstacle_manager = Obstacle_Manager()
@@ -100,9 +102,10 @@ class Game:
         """
         user_input = pygame.key.get_pressed()
         self.player.update(user_input, self.theme) # Alterei para mudar a cor de acordo com o tema;
-        self.obstacle_manager.update(self, self.theme) # Alterei para mudar a cor de acordo com o tema;
+        self.obstacle_manager.update(self, self.theme, self.heart) # Alterei para mudar a cor de acordo com o tema e gerenciar os corações;
         self.update_score()
-        self.power_up_manager.update(self.score, self.game_speed, self.player)
+        self.power_up_manager.update(self.score, self.game_speed, self.player, self.heart)
+        self.heart.update_life() # Atualiza os corações
 
 
     def update_score(self):
@@ -134,6 +137,7 @@ class Game:
         self.draw_score()
         self.draw_power_up_time()
         self.power_up_manager.draw(self.screen)
+        self.heart.draw_lifes(self.screen) # Inseri o coração na tela;
         self.player.draw(self.screen) # Alterei a ordem para o Dino fica em cima do obstáculo
         pygame.display.update()
         pygame.display.flip()

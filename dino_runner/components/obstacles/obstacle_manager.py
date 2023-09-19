@@ -11,7 +11,7 @@ class Obstacle_Manager: # Alterei o nome da classe de 'ObstacleManager' para 'Ob
         self.obstacles = []
         
 
-    def update(self, game, theme:str):
+    def update(self, game, theme:str, heart):
         """
         Adiciona o obstáculo no jogo e verifica se o Dino bateu nele. Modified by Eugênio Jefferson.
         :theme - Recebe o tema atual, para definir a cor do obstáculo.
@@ -30,25 +30,32 @@ class Obstacle_Manager: # Alterei o nome da classe de 'ObstacleManager' para 'Ob
 
             if game.player.dino_rect.colliderect(obstacle.rect):
                 if not game.player.has_power_up:
-                    # 1 - Altera a imagem quando o Dino morre
-                    x_pos = game.player.dino_rect.x
-                    y_pos = game.player.dino_rect.y
-                    
-                    if not game.player.dino_duck:
-                        game.player.image = DINO_DEAD[1] if theme == 'light' else DINO_DEAD[0]
-                    else: 
-                        #y_pos = 310
-                        game.player.image = DUCKING_DEAD[1] if theme == 'light' else DUCKING_DEAD[0]
+                    # 2- Faz a função do coração
+                    if heart.has():
+                        heart.update_life(used=True)
+                        self.obstacles.remove(obstacle)
+                        
+                    else:
+                        # 1 - Altera a imagem quando o Dino morre
+                        x_pos = game.player.dino_rect.x
+                        y_pos = game.player.dino_rect.y
+                        
+                        if not game.player.dino_duck:
+                            game.player.image = DINO_DEAD[1] if theme == 'light' else DINO_DEAD[0]
+                        else: 
+                            #y_pos = 310
+                            game.player.image = DUCKING_DEAD[1] if theme == 'light' else DUCKING_DEAD[0]
 
-                    game.player.dino_rect = game.player.image.get_rect()
-                    game.player.dino_rect.x = x_pos
-                    game.player.dino_rect.y = y_pos
-                    # Fim 1
-                    #pygame.time.delay(2000) #Removi o delay daqui para suavizar a colisão;
-                    game.playing = False
-                    game.death_count += 1
-                    DEATH_SOUND.play() # toca som de morte;
-                    break
+                        game.player.dino_rect = game.player.image.get_rect()
+                        game.player.dino_rect.x = x_pos
+                        game.player.dino_rect.y = y_pos
+                        # Fim 1
+                        #pygame.time.delay(2000) #Removi o delay daqui para suavizar a colisão;
+                        game.playing = False
+                        game.death_count += 1
+                        DEATH_SOUND.play() # toca som de morte;
+                        break
+                    # Fim 2
 
                 else:
                     self.obstacles.remove(obstacle)
